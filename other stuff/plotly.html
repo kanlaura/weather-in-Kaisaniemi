@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>Plotly?</title>
+</head>
+
+<body>
+    <h1>Plot Plot</h1>
+    <div id="myDiv" style="width:600px;height:250px;"></div>
+    <div id="yourDiv" style="width:600px;height:250px;"></div>
+    <div id="hisDiv" style="width:600px;height:250px;"></div>
+    <div id="herDiv" style="width:600px;height:250px;"></div>
+    <div id="ourDiv" style="width:600px;height:250px;"></div>
+    <div id="theirDiv" style="width:1600px;height:250px;"></div>
+    <script>
+        var values = [
+            ['Salaries', 'Office', 'Merchandise', 'Legal', '<b>TOTAL</b>'],
+            [1200000, 20000, 80000, 2000, 12120000],
+            [1300000, 20000, 70000, 2000, 130902000],
+            [1300000, 20000, 120000, 2000, 131222000],
+            [1400000, 20000, 90000, 2000, 14102000]]
+
+        var data = [{
+            type: 'table',
+            header: {
+                values: [["<b>EXPENSES</b>"], ["<b>Q1</b>"],
+                ["<b>Q2</b>"], ["<b>Q3</b>"], ["<b>Q4</b>"]],
+                align: "center",
+                line: { width: 1, color: 'black' },
+                fill: { color: "grey" },
+                font: { family: "Arial", size: 12, color: "white" }
+            },
+            cells: {
+                values: values,
+                align: "center",
+                line: { color: "black", width: 1 },
+                font: { family: "Arial", size: 11, color: ["black"] }
+            }
+        }]
+
+        Plotly.newPlot('myDiv', data);
+
+        var data = [{
+            type: "sunburst",
+            labels: ["Eve", "Cain", "Seth", "Enos", "Noam", "Abel", "Awan", "Enoch", "Azura"],
+            parents: ["", "Eve", "Eve", "Seth", "Seth", "Eve", "Eve", "Awan", "Eve"],
+            values: [10, 14, 12, 10, 2, 6, 6, 4, 4],
+            outsidetextfont: { size: 20, color: "#377eb8" },
+            leaf: { opacity: 0.4 },
+            marker: { line: { width: 2 } },
+        }];
+
+        var layout = {
+            margin: { l: 0, r: 0, b: 0, t: 0 },
+            width: 500,
+            height: 500
+        };
+
+
+        Plotly.newPlot('yourDiv', data, layout);
+        var data = {
+            type: "sankey",
+            orientation: "h",
+            node: {
+                pad: 15,
+                thickness: 30,
+                line: {
+                    color: "black",
+                    width: 0.5
+                },
+                label: ["A1", "A2", "B1", "B2", "C1", "C2"],
+                color: ["blue", "blue", "blue", "blue", "blue", "blue"]
+            },
+
+            link: {
+                source: [0, 1, 0, 2, 3, 3],
+                target: [2, 3, 3, 4, 4, 5],
+                value: [8, 4, 2, 8, 4, 2]
+            }
+        }
+
+        var data = [data]
+
+        var layout = {
+            title: "Basic Sankey",
+            font: {
+                size: 10
+            }
+        }
+
+        Plotly.react('hisDiv', data, layout)
+        Plotly.d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/3d-scatter.csv', function (err, rows) {
+            function unpack(rows, key) {
+                return rows.map(function (row) { return row[key]; });
+            }
+
+            var trace1 = {
+                x: unpack(rows, 'x1'), y: unpack(rows, 'y1'), z: unpack(rows, 'z1'),
+                mode: 'markers',
+                marker: {
+                    size: 12,
+                    line: {
+                        color: 'rgba(217, 217, 217, 0.14)',
+                        width: 0.5
+                    },
+                    opacity: 0.8
+                },
+                type: 'scatter3d'
+            };
+
+            var trace2 = {
+                x: unpack(rows, 'x2'), y: unpack(rows, 'y2'), z: unpack(rows, 'z2'),
+                mode: 'markers',
+                marker: {
+                    color: 'rgb(127, 127, 127)',
+                    size: 12,
+                    symbol: 'circle',
+                    line: {
+                        color: 'rgb(204, 204, 204)',
+                        width: 1
+                    },
+                    opacity: 0.8
+                },
+                type: 'scatter3d'
+            };
+
+            var data = [trace1, trace2];
+            var layout = {
+                margin: {
+                    l: 0,
+                    r: 0,
+                    b: 0,
+                    t: 0
+                }
+            };
+            Plotly.newPlot('herDiv', data, layout);
+        });
+        var data = [
+            {
+                type: "isosurface",
+                x: [0, 0, 0, 0, 1, 1, 1, 1],
+                y: [0, 1, 0, 1, 0, 1, 0, 1],
+                z: [1, 1, 0, 0, 1, 1, 0, 0],
+                value: [1, 2, 3, 4, 5, 6, 7, 8],
+                isomin: 2,
+                isomax: 6,
+                colorscale: "Reds"
+            }
+        ];
+
+        var layout = {
+            margin: { t: 0, l: 0, b: 0 },
+            scene: {
+                camera: {
+                    eye: {
+                        x: 1.88,
+                        y: -2.12,
+                        z: 0.96
+                    }
+                }
+            }
+        };
+
+        Plotly.newPlot('ourDiv', data, layout, { showSendToCloud: true });
+        Plotly.d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv', function (err, data) {
+            // Create a lookup table to sort and regroup the columns of data,
+            // first by year, then by continent:
+            var lookup = {};
+            function getData(year, continent) {
+                var byYear, trace;
+                if (!(byYear = lookup[year])) {
+                    ;
+                    byYear = lookup[year] = {};
+                }
+                // If a container for this year + continent doesn't exist yet,
+                // then create one:
+                if (!(trace = byYear[continent])) {
+                    trace = byYear[continent] = {
+                        x: [],
+                        y: [],
+                        id: [],
+                        text: [],
+                        marker: { size: [] }
+                    };
+                }
+                return trace;
+            }
+
+            // Go through each row, get the right trace, and append the data:
+            for (var i = 0; i < data.length; i++) {
+                var datum = data[i];
+                var trace = getData(datum.year, datum.continent);
+                trace.text.push(datum.country);
+                trace.id.push(datum.country);
+                trace.x.push(datum.lifeExp);
+                trace.y.push(datum.gdpPercap);
+                trace.marker.size.push(datum.pop);
+            }
+
+            // Get the group names:
+            var years = Object.keys(lookup);
+            // In this case, every year includes every continent, so we
+            // can just infer the continents from the *first* year:
+            var firstYear = lookup[years[0]];
+            var continents = Object.keys(firstYear);
+
+            // Create the main traces, one for each continent:
+            var traces = [];
+            for (i = 0; i < continents.length; i++) {
+                var data = firstYear[continents[i]];
+                // One small note. We're creating a single trace here, to which
+                // the frames will pass data for the different years. It's
+                // subtle, but to avoid data reference problems, we'll slice
+                // the arrays to ensure we never write any new data into our
+                // lookup table:
+                traces.push({
+                    name: continents[i],
+                    x: data.x.slice(),
+                    y: data.y.slice(),
+                    id: data.id.slice(),
+                    text: data.text.slice(),
+                    mode: 'markers',
+                    marker: {
+                        size: data.marker.size.slice(),
+                        sizemode: 'area',
+                        sizeref: 200000
+                    }
+                });
+            }
+
+            // Create a frame for each year. Frames are effectively just
+            // traces, except they don't need to contain the *full* trace
+            // definition (for example, appearance). The frames just need
+            // the parts the traces that change (here, the data).
+            var frames = [];
+            for (i = 0; i < years.length; i++) {
+                frames.push({
+                    name: years[i],
+                    data: continents.map(function (continent) {
+                        return getData(years[i], continent);
+                    })
+                })
+            }
+
+            // Now create slider steps, one for each frame. The slider
+            // executes a plotly.js API command (here, Plotly.animate).
+            // In this example, we'll animate to one of the named frames
+            // created in the above loop.
+            var sliderSteps = [];
+            for (i = 0; i < years.length; i++) {
+                sliderSteps.push({
+                    method: 'animate',
+                    label: years[i],
+                    args: [[years[i]], {
+                        mode: 'immediate',
+                        transition: { duration: 300 },
+                        frame: { duration: 300, redraw: false },
+                    }]
+                });
+            }
+
+            var layout = {
+                xaxis: {
+                    title: 'Life Expectancy',
+                    range: [30, 85]
+                },
+                yaxis: {
+                    title: 'GDP per Capita',
+                    type: 'log'
+                },
+                hovermode: 'closest',
+                // We'll use updatemenus (whose functionality includes menus as
+                // well as buttons) to create a play button and a pause button.
+                // The play button works by passing `null`, which indicates that
+                // Plotly should animate all frames. The pause button works by
+                // passing `[null]`, which indicates we'd like to interrupt any
+                // currently running animations with a new list of frames. Here
+                // The new list of frames is empty, so it halts the animation.
+                updatemenus: [{
+                    x: 0,
+                    y: 0,
+                    yanchor: 'top',
+                    xanchor: 'left',
+                    showactive: false,
+                    direction: 'left',
+                    type: 'buttons',
+                    pad: { t: 87, r: 10 },
+                    buttons: [{
+                        method: 'animate',
+                        args: [null, {
+                            mode: 'immediate',
+                            fromcurrent: true,
+                            transition: { duration: 300 },
+                            frame: { duration: 500, redraw: false }
+                        }],
+                        label: 'Play'
+                    }, {
+                        method: 'animate',
+                        args: [[null], {
+                            mode: 'immediate',
+                            transition: { duration: 0 },
+                            frame: { duration: 0, redraw: false }
+                        }],
+                        label: 'Pause'
+                    }]
+                }],
+                // Finally, add the slider and use `pad` to position it
+                // nicely next to the buttons.
+                sliders: [{
+                    pad: { l: 130, t: 55 },
+                    currentvalue: {
+                        visible: true,
+                        prefix: 'Year:',
+                        xanchor: 'right',
+                        font: { size: 20, color: '#666' }
+                    },
+                    steps: sliderSteps
+                }]
+            };
+
+            // Create the plot:
+            Plotly.newPlot('theirDiv', {
+                data: traces,
+                layout: layout,
+                frames: frames,
+            });
+        });
+    </script>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
